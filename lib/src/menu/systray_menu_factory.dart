@@ -1,13 +1,10 @@
 
-import 'package:meta/meta.dart';
 import 'package:my_flutter_app/src/menu/menu_builder_base.dart';
 import 'package:system_tray/system_tray.dart';
 import 'menu_events.dart';
 
 class SystrayMenuFactory implements MenuBuilderBase {
-  SystrayMenuFactory(): super() {
-
-  }
+  SystrayMenuFactory(): super();
 
   @override
   MenuItem showMainWindow() {

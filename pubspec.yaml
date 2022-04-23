@@ -41,6 +41,10 @@ dependencies:
   meta: ^1.7.0
   system_tray: ^0.1.0
 
+  sqflite:
+  path:
+  async: 2.8.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

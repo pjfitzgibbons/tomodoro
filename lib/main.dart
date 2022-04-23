@@ -1,201 +1,172 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:math';
+import 'dart:developer' show log;
 
+import 'package:async/async.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
-import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
-import 'package:my_flutter_app/src/menu/menu_events.dart';
-import 'package:system_tray/system_tray.dart';
+import 'package:my_flutter_app/src/components/button_with_text.dart';
+import 'package:my_flutter_app/src/components/favorite_widget.dart';
+import 'package:my_flutter_app/src/components/tapbox_a.dart';
+import 'package:my_flutter_app/src/database/database.dart';
+import 'package:my_flutter_app/src/datamodel/dog.dart';
 
-import 'src/menu/systray_menu_factory.dart';
+import 'src/app/no_system_tray.dart'
+    if (dart.library.io) 'src/app/system_tray'
+        '.dart';
+
+import 'src/app/no_app.dart'
+    if (dart.library.io) 'src/app/desktop_app_events.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const MyApp());
 
-  doWhenWindowReady(() {
-    final win = appWindow;
-    const initialSize = Size(600, 450);
-    win.minSize = initialSize;
-    win.size = initialSize;
-    win.alignment = Alignment.center;
-    win.title = "How to use system tray with Flutter";
-    win.show();
-  });
+  var fido = const Dog(
+    id: 0,
+    name: 'Fido',
+    age: 35,
+  );
+
+  await insertDog(fido);
+
+  runApp(MyApp());
+
+  // doWhenWindowReady(() {
+  //   final win = appWindow;
+  //   const initialSize = Size(600, 450);
+  //   win.minSize = initialSize;
+  //   win.size = initialSize;
+  //   win.alignment = Alignment.center;
+  //   win.title = "How to use system tray with Flutter";
+  //   win.show();
+  // });
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+// class MyApp extends StatefulWidget {
+//   const MyApp({Key? key}) : super(key: key);
+//
+//   @override
+//   State<MyApp> createState() => _MyAppState();
+// }
 
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  final SystemTray _systemTray = SystemTray();
-  final AppWindow _appWindow = AppWindow();
-
-  Timer? _timer;
-  bool _toogleTrayIcon = true;
-
-  @override
-  void initState() {
-    super.initState();
-    initAppEvents();
-    initSystemTray();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _timer?.cancel();
-  }
-
-  final sysTrayMenu = SystrayMenuFactory();
-
-  Future<void> initSystemTray() async {
-    String path =
-        Platform.isWindows ? 'assets/app_icon.ico' : 'assets/app_icon.png';
-
-    List<String> iconList = ['darts_icon', 'gift_icon'];
-
-    final List<MenuItemBase> menu = [
-      sysTrayMenu.showMainWindow(),
-      sysTrayMenu.hideMainWindow(),
-
-
-      MenuItem(
-        label: 'Start flash tray icon',
-        onClicked: () {
-          debugPrint("Start flash tray icon");
-
-          _timer ??= Timer.periodic(
-            const Duration(milliseconds: 500),
-            (timer) {
-              _toogleTrayIcon = !_toogleTrayIcon;
-              _systemTray.setImage(_toogleTrayIcon ? "" : path);
-            },
-          );
-        },
-      ),
-      MenuItem(
-        label: 'Stop flash tray icon',
-        onClicked: () {
-          debugPrint("Stop flash tray icon");
-
-          _timer?.cancel();
-          _timer = null;
-
-          _systemTray.setImage(path);
-        },
-      ),
-      MenuSeparator(),
-      SubMenu(
-        label: "Test API",
+Widget titleSection = Container(
+    padding: const EdgeInsets.all(32),
+    child: Row(children: [
+      Expanded(
+          child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SubMenu(
-            label: "setSystemTrayInfo",
-            children: [
-              MenuItem(
-                label: 'setTitle',
-                onClicked: () {
-                  final String text = WordPair.random().asPascalCase;
-                  debugPrint("click 'setTitle' : $text");
-                  _systemTray.setTitle(text);
-                },
+          Container(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: const Text(
+              'Oeschinen Lake Campground',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
               ),
-              MenuItem(
-                label: 'setImage',
-                onClicked: () {
-                  String iconName = iconList[Random().nextInt(iconList.length)];
-                  String path = Platform.isWindows
-                      ? 'assets/$iconName.ico'
-                      : 'assets/$iconName.png';
-
-                  debugPrint("click 'setImage' : $path");
-                  _systemTray.setImage(path);
-                },
-              ),
-              MenuItem(
-                label: 'setToolTip',
-                onClicked: () {
-                  final String text = WordPair.random().asPascalCase;
-                  debugPrint("click 'setToolTip' : $text");
-                  _systemTray.setToolTip(text);
-                },
-              ),
-              MenuItem(
-                label: 'getTitle [macOS]',
-                onClicked: () async {
-                  String title = await _systemTray.getTitle();
-                  debugPrint("click 'getTitle' : $title");
-                },
-              ),
-            ],
+            ),
           ),
-          MenuItem(label: 'disabled Item', enabled: false),
+          Text(
+            'Kandersteg, Switzerland',
+            style: TextStyle(
+              color: Colors.grey[500],
+            ),
+          ),
         ],
-      ),
-      MenuSeparator(),
-      MenuItem(
-        label: 'Exit',
-        onClicked: _appWindow.close,
-      ),
-    ];
+      )),
+      const FavoriteWidget(),
+    ]));
 
-    // We first init the systray menu and then add the menu entries
-    await _systemTray.initSystemTray(
-      title: "system tray",
-      iconPath: path,
-      toolTip: "How to use system tray with Flutter",
-    );
 
-    await _systemTray.setContextMenu(menu);
+Widget buttonSection(color) => Row(
+  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  children: [
+    buttonWithText(color, Icons.call, 'CALL'),
+    buttonWithText(color, Icons.near_me, 'ROUTE'),
+    buttonWithText(color, Icons.share, 'SHARE'),
+  ],
+);
 
-    // handle system tray event
-    _systemTray.registerSystemTrayEventHandler((eventName) {
-      debugPrint("eventName: $eventName");
-      if (eventName == "leftMouseDown") {
-      } else if (eventName == "leftMouseUp") {
-        _appWindow.show();
-      } else if (eventName == "rightMouseDown") {
-      } else if (eventName == "rightMouseUp") {
-        _systemTray.popUpContextMenu();
-      }
-    });
-  }
+Widget textSection = const Padding(
+    padding: EdgeInsets.all(32),
+    child: Text(
+      'Lake Oeschinen lies at the foot of the Blüemlisalp in the Bernese '
+          'Alps. Situated 1,578 meters above sea level, it is one of the '
+          'larger Alpine Lakes. A gondola ride from Kandersteg, followed by a '
+          'half-hour walk through pastures and pine forest, leads you to the '
+          'lake, which warms to 20 degrees Celsius in the summer. Activities '
+          'enjoyed here include rowing, and riding the summer toboggan run.',
+      softWrap: true,
+    ));
 
-  Future<void> initAppEvents() async {
-    showAppEvent.subscribe((args) {
-      print("showAppEvent broadcast to _appWindow.show");
-      _appWindow.show();
-    });
-    hideAppEvent.subscribe((args) {
-      print("hideAppEvent broadcast to _appWindow.hide");
-      _appWindow.hide();
-    });
-  }
+Widget tapboxSection = Row(
+  crossAxisAlignment: CrossAxisAlignment.center,
+  mainAxisAlignment: MainAxisAlignment.spaceAround,
+  children: [
+      TapboxA()
+  ]
+);
+
+class MyApp extends StatelessWidget {
+  MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    Color color = Theme.of(context).primaryColor;
+
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: WindowBorder(
-          color: const Color(0xFF805306),
-          width: 1,
-          child: Row(
-            children: const [
-              LeftSide(),
-              RightSide(),
-            ],
-          ),
-        ),
-      ),
-    );
+        title: 'Welcome to Flutter',
+        home: Scaffold(
+            appBar: AppBar(
+              title: const Text('Welcome to Flutter'),
+            ),
+            body: ListView(children: [
+              Image.asset(
+                'assets/lake.jpg',
+                width: 600,
+                height: 240,
+                fit: BoxFit.cover,
+              ),
+              titleSection,
+              buttonSection(color),
+              textSection,
+              tapboxSection,
+            ])));
   }
 }
+
+// class _MyAppState extends State<MyApp> {
+//   @override
+//   void initState() {
+//     super.initState();
+//     initAppEvents();
+//     initSystemTray();
+//   }
+//
+//   @override
+//   void dispose() {
+//     super.dispose();
+//     // _timer?.cancel();
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       home: Scaffold(
+//         body: WindowBorder(
+//           color: const Color(0xFF805306),
+//           width: 1,
+//           child: Row(
+//             children: const [
+//               LeftSide(),
+//               RightSide(),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
 
 const backgroundStartColor = Color(0xFFFFD500);
 const backgroundEndColor = Color(0xFFF6A00C);
