@@ -1,0 +1,5 @@
+CREATE TABLE dogs (
+    id INT NOT NULL PRIMARY KEY AUTOINCREMENT,
+    name TEXT,
+    age INT
+)

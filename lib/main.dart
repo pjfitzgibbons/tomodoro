@@ -1,78 +1,73 @@
-import 'dart:async';
-import 'dart:io';
-import 'dart:developer' show log;
-
-import 'package:async/async.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
+import 'package:drift/drift.dart' as drift;
 import 'package:flutter/material.dart';
 import 'package:my_flutter_app/src/components/button_with_text.dart';
 import 'package:my_flutter_app/src/components/favorite_widget.dart';
 import 'package:my_flutter_app/src/components/tapbox_a.dart';
 import 'package:my_flutter_app/src/database/database.dart';
-import 'package:my_flutter_app/src/datamodel/dog.dart';
 
 import 'src/app/no_system_tray.dart'
     if (dart.library.io) 'src/app/system_tray'
         '.dart';
 
-import 'src/app/no_app.dart'
-    if (dart.library.io) 'src/app/desktop_app_events.dart';
+// import 'src/app/no_app.dart'
+//     if (dart.library.io) 'src/app/desktop_app_events.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  var fido = const Dog(
-    id: 0,
-    name: 'Fido',
-    age: 35,
+  var db = AppDb();
+  db.insertNewDog(
+    DogsCompanion(
+      name: const drift.Value('Fido'),
+      age: const drift.Value(35),
+    )
   );
-
-  await insertDog(fido);
 
   runApp(MyApp());
 
-  // doWhenWindowReady(() {
-  //   final win = appWindow;
-  //   const initialSize = Size(600, 450);
-  //   win.minSize = initialSize;
-  //   win.size = initialSize;
-  //   win.alignment = Alignment.center;
-  //   win.title = "How to use system tray with Flutter";
-  //   win.show();
-  // });
+  doWhenWindowReady(() {
+    final win = appWindow;
+    const initialSize = Size(600, 450);
+    win.minSize = initialSize;
+    win.size = initialSize;
+    win.alignment = Alignment.center;
+    win.title = "How to use system tray with Flutter";
+    win.show();
+  });
 }
 
-// class MyApp extends StatefulWidget {
-//   const MyApp({Key? key}) : super(key: key);
-//
-//   @override
-//   State<MyApp> createState() => _MyAppState();
-// }
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
 
 Widget titleSection = Container(
     padding: const EdgeInsets.all(32),
     child: Row(children: [
       Expanded(
-          child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: const Text(
-              'Oeschinen Lake Campground',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: const Text(
+                'Oeschinen Lake Campground',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
-          ),
-          Text(
-            'Kandersteg, Switzerland',
-            style: TextStyle(
-              color: Colors.grey[500],
+            Text(
+              'Kandersteg, Switzerland',
+              style: TextStyle(
+                color: Colors.grey[500],
+              ),
             ),
-          ),
-        ],
-      )),
+          ],
+        )),
       const FavoriteWidget(),
     ]));
 
@@ -106,67 +101,67 @@ Widget tapboxSection = Row(
   ]
 );
 
-class MyApp extends StatelessWidget {
-  MyApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    Color color = Theme.of(context).primaryColor;
-
-    return MaterialApp(
-        title: 'Welcome to Flutter',
-        home: Scaffold(
-            appBar: AppBar(
-              title: const Text('Welcome to Flutter'),
-            ),
-            body: ListView(children: [
-              Image.asset(
-                'assets/lake.jpg',
-                width: 600,
-                height: 240,
-                fit: BoxFit.cover,
-              ),
-              titleSection,
-              buttonSection(color),
-              textSection,
-              tapboxSection,
-            ])));
-  }
-}
-
-// class _MyAppState extends State<MyApp> {
-//   @override
-//   void initState() {
-//     super.initState();
-//     initAppEvents();
-//     initSystemTray();
-//   }
-//
-//   @override
-//   void dispose() {
-//     super.dispose();
-//     // _timer?.cancel();
-//   }
+// class MyApp extends StatelessWidget {
+//   MyApp({Key? key}) : super(key: key);
 //
 //   @override
 //   Widget build(BuildContext context) {
+//     Color color = Theme.of(context).primaryColor;
+//
 //     return MaterialApp(
-//       debugShowCheckedModeBanner: false,
-//       home: Scaffold(
-//         body: WindowBorder(
-//           color: const Color(0xFF805306),
-//           width: 1,
-//           child: Row(
-//             children: const [
-//               LeftSide(),
-//               RightSide(),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
+//         title: 'Welcome to Flutter',
+//         home: Scaffold(
+//             appBar: AppBar(
+//               title: const Text('Welcome to Flutter'),
+//             ),
+//             body: ListView(children: [
+//               Image.asset(
+//                 'assets/lake.jpg',
+//                 width: 600,
+//                 height: 240,
+//                 fit: BoxFit.cover,
+//               ),
+//               titleSection,
+//               buttonSection(color),
+//               textSection,
+//               tapboxSection,
+//             ])));
 //   }
 // }
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    // initAppEvents();
+    initSystemTray();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    // _timer?.cancel();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        body: WindowBorder(
+          color: const Color(0xFF805306),
+          width: 1,
+          child: Row(
+            children: const [
+              LeftSide(),
+              RightSide(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
 
 const backgroundStartColor = Color(0xFFFFD500);
 const backgroundEndColor = Color(0xFFF6A00C);
