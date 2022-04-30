@@ -8,8 +8,10 @@ import 'package:flutter/material.dart';
 import 'package:my_flutter_app/src/components/button_with_text.dart';
 import 'package:my_flutter_app/src/components/favorite_widget.dart';
 import 'package:my_flutter_app/src/components/tapbox_a.dart';
-import 'package:my_flutter_app/src/database/database.dart';
+import 'package:my_flutter_app/src/database/database.dart' show db;
+import 'package:my_flutter_app/src/database/dogs.dart' as dogsRepo;
 import 'package:my_flutter_app/src/datamodel/dog.dart';
+
 
 import 'src/app/no_system_tray.dart'
     if (dart.library.io) 'src/app/system_tray'
@@ -21,33 +23,18 @@ import 'src/app/no_app.dart'
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  var fido = const Dog(
-    id: 0,
+  var fido = Dog(
+    id: DateTime.now().millisecondsSinceEpoch,
     name: 'Fido',
     age: 35,
   );
 
-  await insertDog(fido);
+  await dogsRepo.insertDog(fido);
+
+  dogsRepo.allDogs().then(print);
 
   runApp(MyApp());
-
-  // doWhenWindowReady(() {
-  //   final win = appWindow;
-  //   const initialSize = Size(600, 450);
-  //   win.minSize = initialSize;
-  //   win.size = initialSize;
-  //   win.alignment = Alignment.center;
-  //   win.title = "How to use system tray with Flutter";
-  //   win.show();
-  // });
 }
-
-// class MyApp extends StatefulWidget {
-//   const MyApp({Key? key}) : super(key: key);
-//
-//   @override
-//   State<MyApp> createState() => _MyAppState();
-// }
 
 Widget titleSection = Container(
     padding: const EdgeInsets.all(32),
