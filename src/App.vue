@@ -7,13 +7,13 @@ import HelloWorld from "./components/HelloWorld.vue";
   <header>
     <img
       alt="Vue logo"
-      class="logo"
+      class="block"
       src="@/assets/logo.svg"
       width="125"
       height="125"
     />
 
-    <div class="wrapper">
+    <div class="wrapper ">
       <HelloWorld msg="You did it!" />
 
       <nav>
@@ -27,7 +27,6 @@ import HelloWorld from "./components/HelloWorld.vue";
 </template>
 
 <style>
-@import "@/assets/base.css";
 
 #app {
   max-width: 1280px;

@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div>
+  <div class="">
+    <div class="grid place-items-center items-center v-screen mx-auto px-4 space-y-2">
       <CountdownControlsVue
         @onStart="clickStart"
         @onPause="clickPause"

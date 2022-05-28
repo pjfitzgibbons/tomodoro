@@ -1,40 +1,41 @@
 <template>
   <form>
-    <div class="row g-4">
-      <div class="col-auto">
-        <label for="taskName" class="form-label">Task Name</label>
-      </div>
-      <div class="col-auto">
+    <div class="flex flex-row space-x-2">
+      <div class="flex flex-col">
+        <label for="taskName" class="">Task Name</label>
         <input
-          id="taskName"
-          type="text"
-          class="form-control"
-          :value="taskStore.taskName"
-          :placeholder="'Enter a Task Name... then click Start'"
-          @input="taskStore.updateTaskName"
+            id="taskName"
+            type="text"
+            class="input font-semibold"
+            :value="taskStore.taskName"
+            :placeholder="'Enter a Task Name... then click Start'"
+            @input="taskStore.updateTaskName"
         />
       </div>
-      <div class="col-auto">
+      <div class="flex flex-col">
         <label for="categoryName" class="form-label">Category</label>
-      </div>
-      <div class="col-auto">
         <input
-          id="categoryName"
-          type="text"
-          class="form-control"
-          :value="taskStore.category"
-          :placeholder="'Enter a Category'"
-          @input="taskStore.updateCategory"
+            id="categoryName"
+            type="text"
+            class="input"
+            :value="taskStore.category"
+            :placeholder="'Enter a Category'"
+            @input="taskStore.updateCategory"
         />
       </div>
-      <dropdown-input key="lane" title="Lane"></dropdown-input>
+      <div class="flex flex-col">
+        <label class="form-label">Lane</label>
+        <lane-autocomplete id="lane"></lane-autocomplete>
+      </div>
     </div>
   </form>
 </template>
 
 <script setup>
-import { useTaskStore } from '@/stores/task';
+import {useTaskStore} from '@/stores/task';
 import DropdownInput from './DropdownInput.vue';
+import LaneAutocomplete from "@/components/LaneAutocomplete.vue";
+
 const taskStore = useTaskStore();
 taskStore.loadTasks();
 </script>
@@ -62,4 +63,11 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+@tailwind components;
+@layer components {
+  .input {
+    @apply rounded-xl font-semibold
+  }
+}
+</style>

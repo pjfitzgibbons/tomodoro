@@ -1,14 +1,14 @@
 <template>
-  <div class="container-sm">
+  <div class="grid place-items-center items-center">
     <h1 class="text-3xl font-bold">Countdown</h1>
     <div className="controls">
-      <button id="start" type="button" class="btn" @click="timerStore.start">
+      <button id="start" type="button" class="btn bg-green-200" @click="timerStore.start">
         Start
       </button>
       <button
         id="pause"
         type="button"
-        class="btn btn-sm btn-outline-secondary"
+        class="btn bg-amber-100"
         @click="timerStore.pause"
       >
         Pause
@@ -16,7 +16,7 @@
       <button
         id="cancel"
         type="button"
-        class="btn btn-sm btn-outline-danger"
+        class="btn bg-rose-300"
         @click="timerStore.cancel"
       >
         Cancel
@@ -31,9 +31,10 @@ const timerStore = useTimerStore();
 </script>
 
 <style>
+@tailwind components;
 @layer components {
   .btn {
-    @apply border-solid border-2 rounded mx-1 p-1 border-slate-600;
+    @apply border-solid border-4 rounded mx-1 p-1 border-slate-500;
   }
 }
 </style>
