@@ -1,38 +1,35 @@
 import { defineStore } from "pinia";
 import { sortBy, reverse } from "lodash";
 import { uid } from "@/utils/customUtils";
-import { db } from "./db";
-import type { Task } from "./db";
+import { tasks } from "./dbLocalforage";
+import type { Task } from "./dbLocalforage";
 
 export const useTaskStore = defineStore("TaskStore", {
   state: () => {
     return {
-      taskName: "abc",
       category: "DEFAULT",
       lane: "Tomodoro",
-      tasks: null,
     };
   },
   actions: {
-    async createTask() {
+    async createTask({ name }: { name: string }) {
       const task: Task = {
         _id: uid(),
-        name: this.taskName,
+        name,
         category: this.category,
         lane: this.lane,
         createdAt: new Date(),
         updatedAt: new Date(),
       };
-      return db.tasks.add(task);
+      // return tasks.setItem();
     },
     async loadTasks() {
-      if (this.tasks !== null) return;
-
-      const list = await this.fetchTasks();
-      this.tasks = list;
+      // if (this.tasks !== null) return;
+      // const list = await this.fetchTasks();
+      // this.tasks = list;
     },
     updateTaskName(evt: any) {
-      this.taskName = evt.target.value;
+      // this.taskName = evt.target.value;
     },
     updateCategory(evt: any) {
       this.category = evt.target.value;
@@ -64,7 +61,7 @@ export const useTaskStore = defineStore("TaskStore", {
       return await response.json();
     },
   },
-  getters: {
-    sortedTasks: (state) => reverse(sortBy(state.tasks || [], ["startDate"])),
-  },
+  // getters: {
+  //   sortedTasks: (state) => reverse(sortBy(state.tasks || [], ["startDate"])),
+  // },
 });

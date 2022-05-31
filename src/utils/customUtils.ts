@@ -1,5 +1,5 @@
 import { v4 as uuid4 } from 'uuid';
-import { encode } from 'uuid-d64';
+import { replace } from "lodash";
 /**
  * Utility functions that need to be reimplemented for each environment.
  * This is the version for Node.js
@@ -17,7 +17,10 @@ import { encode } from 'uuid-d64';
  * @return {string}
  * @alias module:customUtilsNode.uid
  */
-const uid = () => encode(uuid4());
+const uid = () => {
+    return replace(uuid4(),'-','')
+
+}
 
 // Interface
 const _uid = uid;
