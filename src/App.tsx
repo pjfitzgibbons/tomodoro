@@ -1,10 +1,13 @@
 import React from 'react';
 import logo from './logo.svg';
+import TaskBoardView from '@/views/TaskBoardView';
+
 import './App.css';
 
 function App() {
   return (
     <div className="App">
+      <TaskBoardView></TaskBoardView>
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
