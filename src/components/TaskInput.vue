@@ -32,9 +32,9 @@
 </template>
 
 <script setup>
-import {useTaskStore} from '@/stores/task';
+import {useTaskStore} from 'stores/task';
 import DropdownInput from './DropdownInput.vue';
-import LaneAutocomplete from "@/components/LaneAutocomplete.vue";
+import LaneAutocomplete from "components/LaneAutocomplete.vue";
 
 const taskStore = useTaskStore();
 taskStore.loadTasks();

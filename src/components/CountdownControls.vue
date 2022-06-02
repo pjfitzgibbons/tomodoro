@@ -26,7 +26,7 @@
 </template>
 
 <script setup>
-import { useTimerStore } from '@/stores/timer';
+import { useTimerStore } from 'stores/timer';
 const timerStore = useTimerStore();
 </script>
 

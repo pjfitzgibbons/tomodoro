@@ -1,11 +1,8 @@
 import { defineStore } from "pinia";
-import type { Lane } from "@/stores/dbLocalforage";
-import { db } from "@/stores/dbDexie";
-import { uid } from "@/utils/customUtils";
-import type { TomodoroDb } from "./dbDexie";
-import { liveQuery } from 'dexie';
-import type { Observable } from 'rxjs';
-import { chain, sortBy } from 'lodash';
+import type { Lane } from "stores/db";
+import { db } from "stores/db";
+import { uid } from "utils/customUtils";
+  import { chain } from 'lodash';
 import * as _ from 'lodash';
 
 interface LaneStoreProps {
@@ -42,7 +39,9 @@ export const useLaneStore = defineStore("LaneStore", {
   },
   getters: {
     sortedLanes(): Lane[] {
-      return sortBy(this.lanes, 'order')
+      return  chain(this.lanes)
+        .sortBy('order')
+        .value()
     }
   }
 });

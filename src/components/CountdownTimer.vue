@@ -7,8 +7,8 @@
 </template>
 <script setup>
 // import { onUnmounted } from 'vue';
-// import { createNotification } from '@/stores/notification';
-import { useTimerStore } from '@/stores/timer';
+// import { createNotification } from 'stores/notification';
+import { useTimerStore } from 'stores/timer';
 const timerStore = useTimerStore();
 timerStore.startTicking();
 

@@ -32,8 +32,8 @@ import {
   ComboboxOptions,
   ComboboxOption,
 } from '@headlessui/vue';
-import { useCategoryStore } from '@/stores/category';
-import type { Category } from '@/stores/db';
+import { useCategoryStore } from 'stores/category';
+import type { Category } from 'stores/db';
 
 const store = useCategoryStore();
 

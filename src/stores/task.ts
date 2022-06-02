@@ -1,67 +1,55 @@
-import { defineStore } from "pinia";
-import { sortBy, reverse } from "lodash";
-import { uid } from "@/utils/customUtils";
-import { tasks } from "./dbLocalforage";
-import type { Task } from "./dbLocalforage";
+import {defineStore} from "pinia";
+import { chain } from "lodash";
+import {uid} from "utils/customUtils";
+import {db} from "./db";
+import type {Task} from "./db";
+
+export const newTask = ({name, lane}: { name: string, lane: string }): Task => {
+  return {
+    _id: uid(),
+    name,
+    description: '',
+    category: '',
+    lane: lane,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
+  // return tasks.setItem();
+}
+
+interface TaskStoreState {
+  tasks: { [key: string]: Task }
+  isLoading: boolean;
+}
 
 export const useTaskStore = defineStore("TaskStore", {
-  state: () => {
+  state: (): TaskStoreState => {
     return {
-      category: "DEFAULT",
-      lane: "Tomodoro",
+      tasks: {},
+      isLoading: true
     };
   },
   actions: {
-    async createTask({ name }: { name: string }) {
-      const task: Task = {
-        _id: uid(),
-        name,
-        category: this.category,
-        lane: this.lane,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
-      // return tasks.setItem();
-    },
-    async loadTasks() {
-      // if (this.tasks !== null) return;
-      // const list = await this.fetchTasks();
-      // this.tasks = list;
-    },
-    updateTaskName(evt: any) {
-      // this.taskName = evt.target.value;
-    },
-    updateCategory(evt: any) {
-      this.category = evt.target.value;
-    },
-
-    async insertTask(task: Task) {
-      console.log(`creating Task`, task);
-      const response = await fetch("http://localhost:3000/tasks", {
-        method: "POST",
-        body: JSON.stringify(task),
-        headers: { "Content-Type": "application/json" },
-      });
-      return await response.json();
-    },
 
     async fetchTasks() {
       console.log("taskStore loadTasks");
-      const response = await fetch("http://localhost:3000/tasks");
-      return await response.json();
+      this.tasks = chain(await db.tasks.toArray())
+        .keyBy('_id')
+        .value();
+      this.isLoading = false;
     },
 
-    async updateTask(task: Task) {
-      console.log(`update Task ${task}`);
-      const response = await fetch(`http://localhost:3000/tasks/${task._id}`, {
-        method: "PUT",
-        body: JSON.stringify(task),
-        headers: { "Content-Type": "application/json" },
-      });
-      return await response.json();
+    async saveTask(task: Task) {
+      await db.tasks.put({...task})
+      this.tasks[task._id] = task
+      return await task;
     },
   },
-  // getters: {
-  //   sortedTasks: (state) => reverse(sortBy(state.tasks || [], ["startDate"])),
-  // },
+  getters: {
+    sortedTasks: (state) => chain(state.tasks)
+      .values()
+      .sortBy(['startDate'])
+      .reverse()
+      .value(),
+  },
 });

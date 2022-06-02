@@ -32,8 +32,8 @@ import {
   ComboboxOptions,
   ComboboxOption,
 } from '@headlessui/vue';
-import { useLaneStore } from '@/stores/laneLocalforage';
-import type { Lane } from '@/stores/db';
+import { useLaneStore } from 'stores/lane';
+import type { Lane } from 'stores/db';
 
 const laneStore = useLaneStore();
 const lanes = reactive<{ [key: string]: Lane }>({});

@@ -2,7 +2,7 @@
   "name": "vite-bootstrap",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
+    "start": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview --port 5050",
     "test:unit": "vitest --environment jsdom",
@@ -17,6 +17,7 @@
     "@vueuse/rxjs": "^8.6.0",
     "buffer": "^6.0.3",
     "dexie": "^3.2.2",
+    "flowbite": "^1.4.7",
     "localforage": "^1.10.0",
     "lodash": "^4.17.21",
     "lorem-ipsum": "^2.0.4",

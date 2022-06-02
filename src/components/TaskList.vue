@@ -22,7 +22,7 @@
 </template>
 
 <script setup>
-import {useTaskStore} from '@/stores/task';
+import {useTaskStore} from 'stores/task';
 
 const taskStore = useTaskStore();
 const dateFormatter = new Intl.DateTimeFormat('en-US', {

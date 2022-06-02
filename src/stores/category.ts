@@ -1,9 +1,9 @@
 import { defineStore } from "pinia";
-import type { Category } from "@/stores/db";
-import { db } from "@/stores/dbDexie";
-import { uid } from "@/utils/customUtils";
+import type { Category } from "stores/db";
+import { uid } from "utils/customUtils";
 import { chain, sortBy } from 'lodash';
 import * as _ from 'lodash';
+import {db} from "stores/db";
 
 interface CategoryStoreProps {
   categories: { [key:string]: Category };

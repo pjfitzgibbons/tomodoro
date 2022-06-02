@@ -42,30 +42,28 @@
 </template>
 
 <script setup lang="ts">
-import { liveQuery } from 'dexie';
-import { useObservable } from '@vueuse/rxjs';
 import { LoremIpsum } from 'lorem-ipsum';
-import type { Lane, Task } from '@/stores/db';
-import { useLaneStore } from '@/stores/laneDexie';
-import { db } from '@/stores/dbDexie';
-import { onMounted, reactive } from 'vue';
-import EditableLabel from '@/components/EditableLabel.vue';
-import TaskCard from '@/components/TaskCard.vue';
+import type { Lane, Task } from 'stores/db';
+import { useLaneStore } from 'stores/lane';
+import { onMounted } from 'vue';
+import EditableLabel from 'components/EditableLabel.vue';
+import TaskCard from 'components/TaskCard.vue';
 
 const lorem = new LoremIpsum();
+
+const sentence = () => lorem.generateSentences(2);
+const range = (max: number) => Math.floor(Math.random() * max + 3);
+const laneStore = useLaneStore();
 
 const task: Task = {
   _id: 'testTask',
   name: 'Task',
+  description: sentence(),
   category: 'Default',
   lane: 'Lane',
   createdAt: new Date(),
   updatedAt: new Date(),
 };
-
-const sentence = () => lorem.generateSentences(2);
-const range = (max: number) => Math.floor(Math.random() * max + 3);
-const laneStore = useLaneStore();
 
 onMounted(async () => {
   await laneStore.fetchLanes();

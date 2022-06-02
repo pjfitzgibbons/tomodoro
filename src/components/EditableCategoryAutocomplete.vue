@@ -16,16 +16,21 @@
 </template>
 
 <script setup lang="ts">
-import CategoryAutocomplete from '@/components/CategoryAutocomplete.vue';
+import CategoryAutocomplete from 'components/CategoryAutocomplete.vue';
 </script>
 <script lang="ts">
-export default {
+import {defineComponent} from "vue";
+
+export default defineComponent({
   name: 'EditableCategoryAutocomplete',
-  props: ['category'],
+  props: {
+    category: { type:String }
+  }
+  ,
   emits: ['updateLabel'],
-  data() {
+  data():any {
     return {
-      isEditing: this.category == '',
+      isEditing: this.category! === '',
     };
   },
   watch: {
@@ -39,12 +44,12 @@ export default {
     // if (this.isEditing) this.$refs.input.focus();
   },
   methods: {
-    keyupEnter(event) {
+    keyupEnter(event:any) {
       this.$emit('updateLabel', event.target.value);
       this.isEditing = false;
     },
   },
-};
+})
 </script>
 
 <style scoped>

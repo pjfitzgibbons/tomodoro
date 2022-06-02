@@ -1,12 +1,11 @@
 import { defineStore } from "pinia";
-import { uid } from "@/utils/customUtils";
-import { useTaskStore } from "@/stores/task";
+import { uid } from "utils/customUtils";
 
 interface TimerState {
   countdown: number;
   running: boolean;
   initialTime: number;
-  intervalTimerId: NodeJS.Timer | undefined;
+  intervalTimerId: any | undefined;
   countdownFormatter: Intl.DateTimeFormat;
   events: any
 }
@@ -54,9 +53,6 @@ export const useTimerStore = defineStore("TimerStore", {
       this.countdown = this.initialTime;
       this.running = true;
       console.log("triggering started event");
-      const taskStore = useTaskStore();
-      taskStore.createTask();
-      // this.started();
     },
     pause() {
       if (this.countdown > 0) {
