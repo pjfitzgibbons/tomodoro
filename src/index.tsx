@@ -5,8 +5,8 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.css'
 import { injectStores } from '@mobx-devtools/tools'
-import laneStore from "@/stores/lane";
-import taskStore from "@/stores/task";
+import laneStore from "./stores/lane";
+import taskStore from "./stores/task";
 
 
 injectStores({

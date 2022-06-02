@@ -1,6 +1,6 @@
-import type {Lane} from '@/stores/db';
-import {db} from '@/stores/db';
-import {uid} from '@/utils/uid';
+import type {Lane} from 'stores/db';
+import {db} from 'stores/db';
+import {uid} from 'utils/uid';
 import {chain, sortBy} from 'lodash';
 import {makeAutoObservable} from 'mobx'
 

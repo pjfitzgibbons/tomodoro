@@ -1,48 +1,15 @@
-import {LoremIpsum} from 'lorem-ipsum';
-import laneStore, {newLane} from '@/stores/lane'
-import '@/views/TaskBoardView.scss'
-import {Lane, Task} from "@/stores/db";
-import task from "@/stores/task";
-import React from 'react';
-
-const lorem = new LoremIpsum();
-
-const sentence = (): string => lorem.generateSentences(2);
+import laneStore, {newLane} from 'stores/lane'
+import 'views/TaskBoardView.scss'
+import {Lane} from "stores/db";
+import React, {MouseEventHandler} from 'react';
+import {Cards} from "components/Card";
 
 function TaskBoardView() {
-  let thisTask: Task = {
-    _id: 'first',
-    name: 'First Task',
-    lane: 'Todos',
-    category: 'First',
-    description: sentence(),
-    createdAt: new Date(),
-    updatedAt: new Date()
-  }
-
-  const Card = (task: Task) => (
-    <div className="card" key={task._id}>
-      <div>{task.category}</div>
-      <div className="card-body">
-        <div className="card-title">{task.name}</div>
-        <div className="card-text">
-          {task.description}
-        </div>
-      </div>
-    </div>)
-
-  const Cards = () => {
-    return (
-      <React.Fragment>
-        {[thisTask].map((task: Task) => Card(task))}
-      </React.Fragment>
-    );
-  }
 
   const Lane = (lane: Lane) => (
     <div key={lane._id} className="p-2 lane">
       <div className="lane-title">{lane.name}</div>
-      <Cards></Cards>
+      <Cards lane={lane.name}></Cards>
     </div>
   )
   const Lanes = () => (
@@ -51,11 +18,11 @@ function TaskBoardView() {
     </React.Fragment>
   )
 
-  const AddLaneButton = () => {
+  const AddLaneButton = ({onClick}: { onClick: MouseEventHandler }) => {
     return (
-      <div className={"flex-shrink-1 add-lane-tooltip-wrapper"}>
+      <div onClick={onClick}
+           className={"flex-shrink-1 add-lane-tooltip-wrapper"}>
         <svg
-          onClick={addLane}
           xmlns="http://www.w3.org/2000/svg"
           className="lane-button-icon"
           fill="none"
@@ -83,8 +50,8 @@ function TaskBoardView() {
   return (
     <div className={"container-fluid"}>
       <div className={"header d-flex"}>
-        <div className={"col flex-grow-1"}>Trello Board</div>
-        <AddLaneButton></AddLaneButton>
+        <div className={"col "}>Trello Board</div>
+        <AddLaneButton onClick={addLane}></AddLaneButton>
       </div>
       <div className="row">
         <div className="cardwall d-flex overflow-scroll">

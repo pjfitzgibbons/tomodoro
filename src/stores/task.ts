@@ -1,7 +1,7 @@
-import { uid } from "@/utils/uid";
-import type { Task } from "@/stores/db";
+import { uid } from "utils/uid";
+import type {Task} from "stores/db";
 import {chain, filter} from "lodash";
-import {db} from "@/stores/db";
+import {db} from "stores/db";
 import {makeAutoObservable} from "mobx";
 
 interface TaskMap {
@@ -38,9 +38,9 @@ class ObservableTaskStore {
       return task
     }
 
-    // get sortedTasks(lane:string | undefined) {
-    //   return filter(this.tasks, (t) => lane ? t.lane == lane : true)
-    // }
+    sortedTasks(lane: string) {
+      return filter(this.tasks, (t) => lane ? t.lane === lane : true)
+    }
 }
 
 const taskStore = new ObservableTaskStore()

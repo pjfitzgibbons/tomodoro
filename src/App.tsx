@@ -1,6 +1,6 @@
 import React from 'react';
 import logo from './logo.svg';
-import TaskBoardView from '@/views/TaskBoardView';
+import TaskBoardView from 'views/TaskBoardView';
 
 import './App.css';
 

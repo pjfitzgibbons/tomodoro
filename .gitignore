@@ -29,3 +29,4 @@ yarn-error.log*
 .idea/vite-bootstrap.iml
 .idea/codeStyles/codeStyleConfig.xml
 .vscode/settings.json
+/.idea/
