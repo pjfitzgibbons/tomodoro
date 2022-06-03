@@ -1,9 +1,13 @@
 module.exports = {
-  content: ['./index.html', './src/**/*.{js,jsx,ts,tsx,vue}'],
-  theme: {
-    extend: {},
-  },
-  plugins: [
-      require('@tailwindcss/forms'),
-  ],
+    content: [
+        './index.html',
+        './src/**/*.{js,jsx,ts,tsx,vue}',
+        './node_modules/flowbite/**/*.js'
+    ],
+    theme: {
+        extend: {},
+    },
+    plugins: [
+        require('@tailwindcss/forms'), require('flowbite/plugin'),
+    ],
 }

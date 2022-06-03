@@ -1,26 +1,11 @@
 <template>
-  <div class="combobox">
-    <Combobox v-model="selectedCategory" nullable>
-      <ComboboxInput
-        @change="query = $event.target.value"
-        :display-value="(category:any) => category.name"
-      />
-      <button v-if="queryCanAdd()" type="button" @click="createCategory">
-        Add Lane...
-      </button>
-      <ComboboxOptions>
-        <ComboboxOption
-          v-for="category in filteredCategories"
-          v-slot="{ active, selected }"
-          :key="category._id"
-          :value="category"
-        >
-          <li class="optionList">
-            {{ category.name }}
-          </li>
-        </ComboboxOption>
-      </ComboboxOptions>
-    </Combobox>
+  <div class="flex flex-row">
+    <select>
+      <option v-for="category in store.sorted" :key="category._id">
+        {{category.name}}
+      </option>
+    </select>
+    <CategoryEditorModal></CategoryEditorModal>
   </div>
 </template>
 
@@ -34,6 +19,8 @@ import {
 } from '@headlessui/vue';
 import { useCategoryStore } from 'stores/category';
 import type { Category } from 'stores/db';
+import AddButton from "components/AddButton.vue";
+import CategoryEditorModal from "components/CategoryEditorModal.vue";
 
 const store = useCategoryStore();
 
@@ -72,6 +59,10 @@ const createCategory = async () => {
   const newRec: Category = store.newCategory(query.value);
   store.save(newRec);
 };
+
+const addCategory = (event:any) => {
+  console.log("addCategory", event.target.value)
+}
 </script>
 <script lang="ts">
 import { defineComponent } from 'vue';
@@ -102,10 +93,14 @@ export default defineComponent({
 
   input {
     @apply static top-0 border-2 rounded-xl;
+    max-height: 28px;
+    max-width: 200px;
+    text-align: left;
   }
 
   ul {
     @apply static bottom-0 bg-red-50 border-2 rounded-md;
+    max-width: 200px;
   }
 }
 </style>

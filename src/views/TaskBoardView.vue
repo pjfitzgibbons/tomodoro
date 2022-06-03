@@ -1,24 +1,9 @@
 <template>
   <div>
-    <div class="flex bg-slate-100 border-2 border-slate-400">
+    <CategoryAutocomplete></CategoryAutocomplete>
+    <div class="mt-10 flex bg-slate-100 border-2 border-slate-400">
       <span class="flex-1">Trello Board</span>
-      <button type="button" class="flex ml-auto" @click="addLane">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-6 w-6 text-green-400"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          stroke-width="2"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M12 4v16m8-8H4"
-          />
-        </svg>
-        <span>Add Lane</span>
-      </button>
+      <AddButton @click="addLane"></AddButton>
     </div>
     <div class="">
       <div class="v-screen flex overflow-scroll">
@@ -48,6 +33,8 @@ import { useLaneStore } from 'stores/lane';
 import { onMounted } from 'vue';
 import EditableLabel from 'components/EditableLabel.vue';
 import TaskCard from 'components/TaskCard.vue';
+import CategoryAutocomplete from "components/CategoryAutocomplete.vue";
+import AddButton from "components/AddButton.vue";
 
 const lorem = new LoremIpsum();
 

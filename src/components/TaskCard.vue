@@ -14,20 +14,25 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
 import { LoremIpsum } from 'lorem-ipsum';
-import { defineComponent } from 'vue';
-import type { Task } from '@/stores/db';
-import EditableCategoryAutocomplete from './EditableCategoryAutocomplete.vue';
+import EditableCategoryAutocomplete from 'components/CategoryEditorModal.vue';
 
 const lorem = new LoremIpsum();
 
-const sentence = () => lorem.generateSentences(2);
-</script>
-<script lang="ts">
+import type { Task } from 'stores/db';
+import {defineComponent } from "vue";
+import type { PropType } from "vue";
+
 export default defineComponent({
   name: 'TaskCard',
-  props: ['task'],
+  components: { EditableCategoryAutocomplete },
+  props: {
+    task: { type: Object as PropType<Task> }
+  },
+  methods: {
+    sentence: () => lorem.generateSentences(2)
+  }
 });
 </script>
 <style></style>
