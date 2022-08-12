@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Lanes</h1>
+
+<div id="lanes">
+  <% @lanes.each do |lane| %>
+    <%= render lane %>
+    <p>
+      <%= link_to "Show this lane", lane %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New lane", new_lane_path %>
