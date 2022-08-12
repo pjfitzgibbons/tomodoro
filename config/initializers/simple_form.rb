@@ -1,4 +1,6 @@
 
+require 'simple_form'
+
 SimpleForm.setup do |config|
   # Wrappers configration
   config.wrappers :default, class: "form__group" do |b|
