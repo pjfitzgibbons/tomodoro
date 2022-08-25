@@ -1,14 +1,14 @@
 <p style="color: green"><%= notice %></p>
 
-<h1>Cards</h1>
+<h1>Cards of Lane: <%= @lane.name %></h1>
 
 <div id="cards">
   <% @cards.each do |card| %>
     <%= render card %>
     <p>
-      <%= link_to "Show this card", card %>
+      <%= link_to "Show this card", [@lane, card] %>
     </p>
   <% end %>
 </div>
 
-<%= link_to "New card", new_card_path %>
+<%= link_to "New card", new_lane_card_path(@lane) %>

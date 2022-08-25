@@ -1,14 +1,16 @@
 <p style="color: green"><%= notice %></p>
 
-<h1>Lanes</h1>
-
-<div id="lanes">
-  <% @lanes.each do |lane| %>
-    <%= render lane %>
-    <p>
-      <%= link_to "Show this lane", lane %>
-    </p>
-  <% end %>
+<div class="ui">
+  <nav class="navbar app">
+    <h1>Tomodoro!</h1>
+  </nav>
+  <nav class="navbar board">
+    <div>Board: My Tasks</div>
+    <%= link_to "New lane", new_lane_path,
+                class: "btn btn--primary",
+                data: { turbo_frame: dom_id(Lane.new) } %>
+  </nav>
+  <div class="lanes">
+    <%= render @lanes %>
+  </div>
 </div>
-
-<%= link_to "New lane", new_lane_path %>

@@ -1,0 +1,25 @@
+
+
+.ui {
+  height: 100vh;
+
+  display: grid;
+  grid-template-rows: $appbar-height $navbar-height 1fr;
+  //grid-template-columns: 100%;
+
+  background-color: $board-bg-color;
+  color: #eee;
+}
+
+.navbar {
+  padding-left: $gap;
+  display: flex;
+  align-items: center;
+  &.app {
+    background-color: $appbar-bg-color;
+    font-size: 1.5rem;
+  }
+  &.board {
+    font-size: 1.1rem;
+  }
+}

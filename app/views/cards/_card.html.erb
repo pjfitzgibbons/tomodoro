@@ -1,27 +1,5 @@
-<div id="<%= dom_id card %>">
-  <p>
-    <strong>Title:</strong>
-    <%= card.title %>
-  </p>
-
-  <p>
-    <strong>Body:</strong>
-    <%= card.body %>
-  </p>
-
-  <p>
-    <strong>Tags:</strong>
-    <%= card.tags %>
-  </p>
-
-  <p>
-    <strong>Category:</strong>
-    <%= card.category %>
-  </p>
-
-  <p>
-    <strong>Lane:</strong>
-    <%= card.lane_id %>
-  </p>
-
+<div class="card" id="<%= dom_id card %>">
+    <h3><%= "#{card.title}" %></h3>
+    <p><%= card.body %></p>
+    <a href="<%= edit_lane_card_path card.lane, card %>" class="btn btn--slim btn--secondary">Edit...</a>
 </div>

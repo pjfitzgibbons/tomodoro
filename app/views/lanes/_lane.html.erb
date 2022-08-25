@@ -1,7 +1,10 @@
-<div id="<%= dom_id lane %>">
-  <p>
-    <strong>Name:</strong>
-    <%= lane.name %>
-  </p>
+<div class="lane">
+  <header><%= lane.name %></header>
 
+  <div class="lane_cards" id="<%= dom_id lane %>">
+    <%= render lane.cards %>
+  </div>
+  <footer>
+    <a href="">Add a Card</a>
+  </footer>
 </div>
