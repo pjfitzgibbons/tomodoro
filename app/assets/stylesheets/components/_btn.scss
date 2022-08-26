@@ -19,6 +19,11 @@
         transition: filter 250ms, color 200ms;
     }
 
+    &--slim {
+        padding: var(--space-4xs) var(--space-xs);
+        font-size: var(--font-size-xs);
+        line-height: var(--space-s);
+    }
 
     &--primary {
         color: var(--color-white);

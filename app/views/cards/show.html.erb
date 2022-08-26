@@ -3,8 +3,8 @@
 <%= render @card %>
 
 <div>
-  <%= link_to "Edit this card", edit_card_path(@card) %> |
-  <%= link_to "Back to cards", cards_path %>
+  <%= link_to "Edit this card", edit_lane_card_path(@lane, @card) %> |
+  <%= link_to "Back to cards", lane_cards_path(@lane) %>
 
-  <%= button_to "Destroy this card", @card, method: :delete %>
+  <%= button_to "Destroy this card", [@lane, @card], method: :delete %>
 </div>

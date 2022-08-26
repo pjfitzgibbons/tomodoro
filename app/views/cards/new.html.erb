@@ -1,9 +1,11 @@
 <h1>New card</h1>
 
-<%= render "form", card: @card %>
+<turbo-frame id="<%= turbo_new_card_id @lane %>">
+<%= render "form", card: @card, lane: @lane %>
+</turbo-frame>
 
 <br>
 
 <div>
-  <%= link_to "Back to cards", cards_path %>
+  <%= link_to "Back to cards", lane_cards_path(@lane) %>
 </div>

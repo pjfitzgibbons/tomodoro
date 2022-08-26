@@ -1,10 +1,14 @@
 <div class="lane">
   <header><%= lane.name %></header>
 
-  <div class="lane_cards" id="<%= dom_id lane %>">
+  <div class="lane_cards" data-turbo-frame="<%= dom_id(lane) %>_cards">
     <%= render lane.cards %>
+    <turbo-frame id="<%= turbo_new_card_id(lane) %>"></turbo-frame>
   </div>
   <footer>
-    <a href="">Add a Card</a>
+    <a href="<%= new_lane_card_path(lane) %>"
+       data-turbo-frame="<%= turbo_new_card_id(lane) %>">
+      Add a Card
+    </a>
   </footer>
 </div>

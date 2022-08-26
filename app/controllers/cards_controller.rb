@@ -1,5 +1,6 @@
 class CardsController < ApplicationController
   before_action :set_card, only: %i[ show edit update destroy ]
+  before_action :set_lane
 
   # GET /cards or /cards.json
   def index
@@ -21,12 +22,13 @@ class CardsController < ApplicationController
 
   # POST /cards or /cards.json
   def create
-    @card = Card.new(card_params)
+    @card = Card.new(lane: @lane, **card_params)
 
     respond_to do |format|
       if @card.save
-        format.html { redirect_to card_url(@card), notice: "Card was successfully created." }
-        format.json { render :show, status: :created, location: @card }
+        format.html { redirect_to lane_card_url(@lane, @card), notice: "Card was successfully created." }
+        format.json { render :show, status: :created, location: [@lane, @card] }
+        format.turbo_stream { render :created, location: [@lane, @card] }
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @card.errors, status: :unprocessable_entity }
@@ -38,7 +40,7 @@ class CardsController < ApplicationController
   def update
     respond_to do |format|
       if @card.update(card_params)
-        format.html { redirect_to card_url(@card), notice: "Card was successfully updated." }
+        format.html { redirect_to lane_card_url(@lane, @card), notice: "Card was successfully updated." }
         format.json { render :show, status: :ok, location: @card }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -62,6 +64,10 @@ class CardsController < ApplicationController
     def set_card
       @card = Card.find(params[:id])
     end
+
+  def set_lane
+    @lane = Lane.find(params[:lane_id])
+  end
 
     # Only allow a list of trusted parameters through.
     def card_params
