@@ -1,5 +1,5 @@
 <%= turbo_stream.replace "#{dom_id(@lane)}_new_card" do %>
     <%= render @card %>
-    <turbo-frame id="<%= dom_id(@lane) %>_new_card">
+    <turbo-frame id="<%= turbo_new_card_id(@lane) %>">
     </turbo-frame>
 <% end %>

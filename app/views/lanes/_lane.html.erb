@@ -1,8 +1,15 @@
-<div class="lane">
+<div class="lane"
+     data-drag-target="lane"
+     data-lane-id="<%= lane.id %>"
+     data-action="dragover->drag#dragOver drop->drag#drop"
+     data-drag-url="/lanes/:lane_id/cards/:id/move"
+>
   <header><%= lane.name %></header>
 
-  <div class="lane_cards" data-turbo-frame="<%= dom_id(lane) %>_cards">
-    <%= render lane.cards %>
+  <div class="lane_cards">
+    <turbo-frame id="<%= dom_id(lane) %>_cards">
+      <%= render lane.cards %>
+    </turbo-frame>
     <turbo-frame id="<%= turbo_new_card_id(lane) %>"></turbo-frame>
   </div>
   <footer>

@@ -1,4 +1,4 @@
-<turbo-frame id="<%= dom_id card %>">
+<turbo-frame id="<%= card_dom_id card %>">
   <div>
     <%= form_with(model: [@lane, card], class: "card card--edit") do |form| %>
       <% if card.errors.any? %>

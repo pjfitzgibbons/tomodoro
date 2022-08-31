@@ -1,4 +1,14 @@
-<turbo-frame id="<%= dom_id card %>">
+<turbo-frame id="<%= card_dom_id card %>"
+             data-card-id="<%= card.id %>"
+             data-lane-id="<%= card.lane.id %>"
+             data-position="<%= card.position %>"
+             data-drag-target="card"
+             draggable="true"
+             data-action="
+             dragstart->drag#dragStart dragenter->drag#dragEnter dragover->drag#dragOver
+             drop->drag#drop dragleave->drag#dragLeave dragend->drag#dragEnd
+"
+>
 
 <div class="card">
     <h3><%= "#{card.title}" %></h3>

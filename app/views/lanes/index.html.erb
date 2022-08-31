@@ -10,7 +10,7 @@
                 class: "btn btn--primary",
                 data: { turbo_frame: dom_id(Lane.new) } %>
   </nav>
-  <div class="lanes">
+  <div class="lanes" data-controller="drag">
     <%= render @lanes %>
   </div>
 </div>

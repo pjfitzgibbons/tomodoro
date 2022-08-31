@@ -1,0 +1,10 @@
+<%= if @prevCard
+      turbo_stream.remove card_dom_id(@prevCard)
+    end
+%>
+
+<%= turbo_stream.replace "#{dom_id(@lane)}_cards" do
+%>
+  <turbo-frame id="<%= dom_id(@lane) %>_cards">
+    <%= render @lane.cards %>
+  </turbo-frame><% end %>

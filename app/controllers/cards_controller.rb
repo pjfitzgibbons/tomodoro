@@ -1,5 +1,5 @@
 class CardsController < ApplicationController
-  before_action :set_card, only: %i[ show edit update destroy ]
+  before_action :set_card, only: %i[ show edit update destroy move ]
   before_action :set_lane
 
   # GET /cards or /cards.json
@@ -13,7 +13,7 @@ class CardsController < ApplicationController
 
   # GET /cards/new
   def new
-    @card = Card.new
+    @card = Card.new(lane: @lane)
   end
 
   # GET /cards/1/edit
@@ -34,6 +34,27 @@ class CardsController < ApplicationController
         format.json { render json: @card.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  # PATCH /cards/1/move
+  def move
+    logger.debug "Card Move card-lane: #{@card.lane.id} lane: #{@lane.id}"
+
+    if @lane.id != @card.lane.id
+      # preserve current state of card for turbo-frame removal
+      @prevCard = Card.new(@card.attributes)
+
+      @lane.cards << @card
+
+      # @card.save!
+      if params[:position]
+        @card.set_list_position(params[:position].to_i)
+      end
+      @lane.cards.reload
+    else
+      @card.set_list_position(params[:position].to_i)
+    end
+
   end
 
   # PATCH/PUT /cards/1 or /cards/1.json
