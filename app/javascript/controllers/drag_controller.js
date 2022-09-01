@@ -4,7 +4,6 @@ export default class extends Controller {
     static targets = ["card", "lane"]
 
     findDragTarget(el) {
-        console.log("findDragTarget", el)
         if (el.dataset?.dragTarget) return el
 
         return (el.parentElement && this.findDragTarget(el.parentElement))
@@ -21,7 +20,6 @@ export default class extends Controller {
         this.dragSrcEl = this.findDragTarget(event.target)
         this.setOpacity()
 
-        console.log("dragStart", {dragSrcEl: this.dragSrcEl})
         event.dataTransfer.effectAllowed = "move"
         event.dataTransfer.setData("text/html", event.target.innerHtml)
     }
@@ -55,15 +53,12 @@ export default class extends Controller {
         event.target.classList.remove("drag-over")
         this.resetOpacity()
 
-        console.log("drop... finding target")
         let dropTarget = this.findDragTarget(event.target)
 
-        console.log("drop", {data: dropTarget})
         let cardId = this.dragSrcEl.dataset.cardId
         let laneId = dropTarget.dataset.laneId
         let position = dropTarget.dataset.position
         let url = this.findUrl(event.target).replace(":lane_id", laneId).replace(":id", cardId)
-        console.log("drop", {url, position, originalPosition: this.dragSrcEl.dataset.position})
 
         fetch(url, {
             method: 'PATCH',
