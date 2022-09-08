@@ -11,10 +11,7 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[7.0].define(version: 2022_08_26_215220) do
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-
-  create_table "cards", force: :cascade do |t|
+  create_table "cards", charset: "utf8", force: :cascade do |t|
     t.string "title"
     t.string "body"
     t.string "tags"
@@ -26,7 +23,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_26_215220) do
     t.index ["lane_id"], name: "index_cards_on_lane_id"
   end
 
-  create_table "lanes", force: :cascade do |t|
+  create_table "lanes", charset: "utf8", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
