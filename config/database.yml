@@ -38,4 +38,5 @@ test:
   database: tomodoro_test
 
 production:
+  encoding: utf8
   url: <%= ENV['JAWSDB_URL'] %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_08_26_215220) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_08_192830) do
   create_table "cards", charset: "utf8", force: :cascade do |t|
     t.string "title"
     t.string "body"
@@ -27,6 +27,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_26_215220) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "position"
   end
 
   add_foreign_key "cards", "lanes"
